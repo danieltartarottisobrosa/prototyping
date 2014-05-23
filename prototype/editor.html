@@ -1,0 +1,782 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Prototyping</title>
+    <link href='http://fonts.googleapis.com/css?family=Patrick+Hand+SC' rel='stylesheet' type='text/css'>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="jquery-ui-1.10.4.min.css" rel="stylesheet"></link>
+
+    <style>
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: 'Patrick Hand SC';
+        color: #555;
+        font-size: 18px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .fa {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+
+      #menu {
+        width: 179px;
+        height: 100%;
+        background: #f9f9f9;
+        border-right: dashed 1px #777;
+        padding: 8px 13px;
+      }
+
+      #logo {
+        font-weight: bold;
+        font-size: 26px;
+        color: black;
+      }
+
+      #version {
+        font-size: 12px;
+      }
+
+      .actions {
+        padding-left: 13px;
+      }
+
+      .actions-scroller {
+        position: absolute;
+        overflow-y: auto;
+        top: 40px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      .actions-title {
+        font-size: 20px;
+      }
+
+      .action-group {
+        padding-left: 8px;
+        margin-bottom: 13px;
+      }
+
+      .action {
+        cursor: pointer;
+        border-radius: 3px;
+        width: 140px;
+      }
+
+      .action-selected {
+        background: #999;
+        color: #f9f9f9;
+        cursor: default;
+      }
+
+      .action-separator {
+        border-bottom: groove 2px white;
+        width: 140px;
+      }
+
+      .action:hover {
+        background: #555;
+        color: #f9f9f9;
+      }
+
+      .action-selected:hover {
+        background: #999 !important;
+      }
+
+      #content {
+        position: absolute;
+        left: 179px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        min-width: 400px;
+        background: #E7E7E7;
+      }
+
+      .content-scroller {
+        width: 100%;
+        position: absolute;
+        top: 61px;
+        bottom: 0;
+        overflow: auto;
+      }
+
+      .browser {
+        position: relative;
+        width: 100%;
+        height: 61px;
+      }
+
+      .browser-middle {
+        position: absolute;
+        width: 100%;
+        height: 61px;
+        background: url( 'chrome-middle.png' );
+        background-repeat: repeat-x;
+      }
+
+      .browser-left {
+        position: absolute;
+        width: 271px;
+        height: 61px;
+        background: url( 'chrome-left.png' );
+      }
+
+      .browser-right {
+        position: absolute;
+        right: 0;
+        width: 156px;
+        height: 61px;
+        background: url( 'chrome-right.png' );
+      }
+
+      .tab-title {
+        position: absolute;
+        top: 5px;
+        left: 32px;
+        height: 18px;
+        width: 143px;
+        padding-left: 5px;
+        background: transparent;
+        border: none;
+      }
+
+      .favicon {
+        position: absolute;
+        top: 6px;
+        left: 16px;
+        width: 16px;
+        height: 16px;
+      }
+
+      .url {
+        position: absolute;
+        top: 28px;
+        left: 124px;
+        height: 27px;
+        right: 32px;
+      }
+
+      .url > input {
+        width: 100%;
+        height: 25px;
+        background: transparent;
+        border: none;
+        font-size: 17px;
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+
+      .stage {
+        position: relative;
+        height: 100%;
+        background: white;
+        border-right: dashed 1px #d9d9d9;
+        border-left: dashed 1px #d9d9d9;
+        margin: 0 auto;
+        display: none;
+      }
+
+      .stage.tiny {
+        width: 300px;
+      }
+
+      .stage.small {
+        width: 760px !important;
+      }
+
+      .stage.medium {
+        width: 990px !important;
+      }
+
+      .stage.large {
+        width: 1200px !important;
+      }
+
+      .component {
+        position: absolute;
+        cursor: grab;
+        cursor: -webkit-grab;
+        /*box-sizing: content-box;*/
+        top: 30px;
+        left: 30px;
+        background: rgba( 255, 255, 255, 0.85 );
+      }
+
+      .selected {
+        -webkit-box-shadow: inset 0 0 2px 2px rgba( 185, 215, 185, 0.8 );
+           -moz-box-shadow: inset 0 0 2px 2px rgba( 185, 215, 185, 0.8 );
+                box-shadow: inset 0 0 2px 2px rgba( 185, 215, 185, 0.8 );
+      }
+
+      .component-rect {
+        width: 250px;
+        height: 190px;
+        border-width: 2px;
+        border-image: url('borda.png') 2 stretch;
+      }
+
+      .component-paragraph {
+        width: 150px;
+        height: 50px;
+        border-width: 2px;
+        border-image: url('borda.png') 2 stretch;
+        background: #dfdfdf;
+        opacity: 0.85;
+      }
+
+      .component-title {
+        width: 150px;
+        height: 15px;
+        border-width: 2px;
+        border-image: url('borda.png') 2 stretch;
+        background: gray;
+        opacity: 0.9;
+      }
+
+      .component-circle {
+        width: 100px;
+        height: 100px;
+        border: groove 2px #fefefe;
+        border-radius: 50%;
+      }
+
+      .component-anchor {
+        width: 120px;
+        height: 15px;
+        border-width: 2px;
+        border-image: url('borda.png') 2 stretch;
+        background: rgb(189, 189, 238);
+        opacity: 0.9;
+      }
+
+      .component-picture {
+        width: 100px;
+        height: 100px;
+        border-width: 2px;
+        border-image: url('borda.png') 2 stretch;
+        background: #F6F7B5;
+      }
+
+      .component-avatar {
+        width: 100px;
+        height: 100px;
+        border: groove 2px #fefefe;
+        border-radius: 50%;
+        background: #F6F7B5;
+      }
+
+      .ui-resizable-handle {
+        opacity: 0;
+      }
+
+      .ui-icon-gripsmall-diagonal-se {
+        opacity: 0;
+      }
+
+      .horizontal-rule {
+        display: none;
+        position: absolute;
+        height: 9px;
+        z-index: 9999;
+        opacity: 0.8;
+        text-align: center;
+        font-size: 12px;
+        color: #CFD257;
+      }
+
+      .horizontal-rule .line {
+        height: 5px;
+        border-bottom: dashed 1px #CFD257;
+      }
+
+      .horizontal-rule .left-end {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        border-left: solid 1px #CFD257;
+      }
+
+      .horizontal-rule .right-end {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        border-right: solid 1px #CFD257;
+      }
+
+      .vertical-rule {
+        display: none;
+        position: absolute;
+        width: 9px;
+        z-index: 9999;
+        opacity: 0.8;
+        font-size: 12px;
+        color: #CFD257;
+      }
+
+      .vertical-rule .line {
+        width: 5px;
+        height: 100%;
+        border-right: dashed 1px #CFD257;
+      }
+
+      .vertical-rule .top-end {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        border-top: solid 1px #CFD257;
+      }
+
+      .vertical-rule .bottom-end {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-bottom: solid 1px #CFD257;
+      }
+
+      .vertical-rule .distance {
+        position: absolute;
+        top: 49%;
+        left: 7px;
+      }
+
+      .size {
+        position: absolute;
+        width: 50px;
+        height: 15px;
+        font-size: 12px;
+        color: #CFD257;
+        z-index: 9999;
+        text-align: center;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <section id="menu">
+      <span id="logo">Prototyping</span>
+      <span id="version">Beta</span>
+
+      <div class="actions-scroller">
+        <ul class="actions">
+
+          <li class="actions-title">
+            Page
+          </li>
+          <li>
+            <ul class="action-group">
+              <li class="action"><i class="fa fa-file-o" style="font-size: 16px"></i> Add</li>
+              <li class="action"><i class="fa fa-trash-o"></i> Knead</li>
+            </ul>
+          </li>
+
+          <li class="actions-title">
+            Draw
+          </li>
+          <li>
+            <ul class="action-group">
+              <li class="action" onclick="eraseComponent()"><i class="fa fa-eraser"></i> Erase</li>
+              <li class="action-separator"></li>
+              <li class="action" onclick="drawComponent( 'rect' )"><i class="fa fa-square-o"></i> Rect</li>
+              <li class="action" onclick="drawComponent( 'circle' )"><i class="fa fa-circle-thin"></i> Circle</li>
+              <li class="action" onclick="drawComponent( 'title' )"><i class="fa fa-header"></i> Title</li>
+              <li class="action" onclick="drawComponent( 'paragraph' )"><i class="fa fa-paragraph"></i> Paragraph</li>
+              <li class="action" onclick="drawComponent( 'anchor' )"><i class="fa fa-link"></i> Anchor</li>
+              <li class="action" onclick="drawComponent( 'picture' )"><i class="fa fa-picture-o"></i> Picture</li>
+              <li class="action" onclick="drawComponent( 'avatar' )"><i class="fa fa-smile-o"></i> Avatar</li>
+            </ul>
+          </li>
+
+          <li class="actions-title">
+            z-Order
+          </li>
+          <li>
+            <ul class="action-group">
+              <li class="action" onclick="zOrder( 'front' )"><i class="fa fa-angle-double-up"></i> Front</li>
+              <li class="action" onclick="zOrder( 'up' )"><i class="fa fa-angle-up"></i> Up</li>
+              <li class="action" onclick="zOrder( 'down' )"><i class="fa fa-angle-down"></i> Down</li>
+              <li class="action" onclick="zOrder( 'back' )"><i class="fa fa-angle-double-down"></i> Back</li>
+            </ul>
+          </li>
+
+          <li class="actions-title">
+            Resolution
+          </li>
+          <li>
+            <ul class="action-group">
+              <li class="action large" onclick="changeResolution( 'large' )"><i class="fa fa-square-o" style="font-size: 18px"></i> Large</li>
+              <li class="action medium action-selected" onclick="changeResolution( 'medium' )"><i class="fa fa-square-o" style="font-size: 14px"></i> Medium</li>
+              <li class="action small" onclick="changeResolution( 'small' )"><i class="fa fa-square-o" style="font-size: 11px"></i> Small</li>
+              <li class="action tiny" onclick="changeResolution( 'tiny' )"><i class="fa fa-square-o" style="font-size: 8px"></i> Tiny</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="content">
+
+      <div class="browser">
+        <div class="browser-middle"></div>
+        <div class="browser-left"></div>
+        <div class="browser-right"></div>
+
+        <img class="favicon" src="favicon.ico"/>
+
+        <input class="tab-title" type="text" value="Page Title">
+
+        <div class="url">
+          <input type="text" value="http://localhost/sample">
+        </div>
+      </div>
+
+      <div class="content-scroller">
+
+        <div class="stage tiny">  
+          <div id="left-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="top-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+          
+          <div id="right-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="bottom-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <span class="size"></span>
+        </div>
+
+        <div class="stage small">  
+          <div id="left-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="top-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+          
+          <div id="right-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="bottom-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <span class="size"></span>
+        </div>
+
+        <div class="stage medium">  
+          <div id="left-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="top-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+          
+          <div id="right-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="bottom-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <span class="size"></span>
+        </div>
+
+        <div class="stage large">  
+          <div id="left-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="top-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+          
+          <div id="right-rule" class="horizontal-rule">
+            <div class="line"></div>
+            <div class="left-end"></div>
+            <div class="right-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <div id="bottom-rule" class="vertical-rule">
+            <div class="line"></div>
+            <div class="top-end"></div>
+            <div class="bottom-end"></div>
+            <span class="distance">10</span>
+          </div>
+
+          <span class="size"></span>
+        </div>
+
+      </div>
+    </section>
+
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="jquery-ui-1.10.4.min.js"></script>
+    <script>
+      var $currStage,
+          components = {
+            tiny: [],
+            small: [],
+            medium: [],
+            large: []
+          },
+          $selected = null,
+          resolution = 'medium';
+
+      function changeSelection() {
+        $( ".component" ).removeClass( 'selected' );
+
+        if ( $selected ) {
+          $selected.addClass( 'selected' );
+        }
+      }
+
+      function updateRules() {
+        if ( !$selected ) {
+          $currStage.find( '.horizontal-rule, .vertical-rule, .size' ).hide();
+          return;
+        }
+
+        var $stage = $( '.stage' ),
+            coords = {
+              a: 1,
+              b: 1,
+              c: 1,
+              d: 1,
+              e: parseInt( $selected.css( 'left' ), 10 ) - 2,
+              f: parseInt( $selected.css( 'top' ), 10 ) - 2
+            };
+
+        coords.g = coords.e + $selected.width() + 6;
+        coords.h = coords.f + $selected.height() + 6;
+        coords.i = coords.f + $selected.height() / 2;
+        coords.j = coords.e + $selected.width() / 2;
+
+        $currStage.find( '#left-rule' ).css( 'left', coords.a ).width( coords.e )
+            .css( 'top', coords.i ).find( '.distance' ).text( coords.e + 2 );
+        $currStage.find( '#top-rule' ).css( 'top', coords.b ).height( coords.f )
+            .css( 'left', coords.j ).find( '.distance' ).text( coords.f + 2 );
+        $currStage.find( '#right-rule' ).css( 'left', coords.g ).css( 'right', coords.c )
+            .css( 'top', coords.i ).find( '.distance' ).text( $stage.width() - coords.g );
+        $currStage.find( '#bottom-rule' ).css( 'top', coords.h ).css( 'bottom', coords.d )
+            .css( 'left', coords.j ).find( '.distance' ).text( $stage.height() - coords.h );
+
+        $currStage.find( '.size' ).css( 'top', coords.f + $selected.height() / 2 - 3 )
+            .css( 'left', coords.e + $selected.width() / 2 - 24 + 1 )
+            .text( $selected.width() + 'x' + $selected.height() );
+      }
+
+      function drawComponent( type ) {
+        var comp = document.createElement( 'div' );
+            $comp = $( comp ),
+            zIndex = components[ resolution ].length;
+
+        $comp.addClass( 'component' ).addClass( 'component-' + type );
+        $comp.css( 'z-index', zIndex );
+        $comp.appendTo( $currStage );
+
+        components[ resolution ].push( $comp );
+        $selected = $comp;
+        changeSelection();
+
+        $comp.resizable({
+          grid: [ 10, 10 ],
+          handles: "all",
+          start: function() {
+            $currStage.find( '.horizontal-rule, .vertical-rule' ).show();
+            $currStage.find( '.size' ).show();
+          },
+          resize: updateRules,
+          stop: function() {
+            $currStage.find( '.horizontal-rule, .vertical-rule' ).hide();
+            $currStage.find( '.size' ).hide();
+          }
+
+        }).draggable({
+          //containment: ".stage",
+          scroll: true,
+          delay: 100,
+          //snap: true,
+          grid: [ 10, 10 ],
+          cursor: 'grabbing',
+          start: function() {
+            $currStage.find( '.horizontal-rule, .vertical-rule' ).show();
+            $currStage.find( '.size' ).show();
+          },
+          drag: updateRules,
+          stop: function() {
+            $currStage.find( '.horizontal-rule, .vertical-rule' ).hide();
+            $currStage.find( '.size' ).hide();
+          }
+
+        }).mouseover( function() {
+          $( this ).find( '.ui-resizable-handle' ).not( '.ui-icon-gripsmall-diagonal-se' ).css( 'opacity', 1 );
+
+        }).mouseout( function() {
+          $( this ).find( '.ui-resizable-handle' ).not( '.ui-icon-gripsmall-diagonal-se' ).css( 'opacity', 0 );
+
+        }).mousedown( function( event ) {
+          event.stopPropagation();
+          $selected = $( this );
+          changeSelection();
+        });
+      }
+
+      function eraseComponent() {
+        if ( !$selected ) return;
+
+        var i = parseInt( $selected.css( 'z-index' ), 10 ),
+            len = components[ resolution ].length;
+
+        components[ resolution ].splice( i, 1 );
+
+        for ( ; i < len; i++ ) {
+          $( components[ resolution ][ i ] ).css( 'z-index', i );
+        }
+
+        $selected.remove();
+      }
+
+      function zOrder( type ) {
+        if ( !$selected ) return;
+
+        var zIndex = parseInt( $selected.css( 'z-index' ), 10 ),
+            originalZIndex = zIndex,
+            $comp,
+            last = components[ resolution ].length - 1;
+
+        switch ( type ) {
+          case "front":
+            zIndex = last;
+            break;
+
+          case "up":
+            zIndex++;
+            break;
+
+          case "down":
+            zIndex--;
+            break;
+
+          case "back":
+            zIndex = 0;
+            break;
+        } 
+
+        if ( zIndex < 0 ) {
+          zIndex = 0;
+        }
+
+        if ( zIndex > last ) {
+          zIndex = last;
+        }
+
+        $comp = components[ resolution ][ zIndex ];
+
+        components[ resolution ].splice( zIndex, 1, $selected );
+        $selected.css( 'z-index', zIndex );
+
+        components[ resolution ].splice( originalZIndex, 1, $comp );
+        $comp.css( 'z-index', originalZIndex );
+      }
+
+      function changeResolution( res ) {
+        $( '.action' ).not( '.' + res ).removeClass( 'action-selected' );
+        $( '.action.' + res ).addClass( 'action-selected' );
+
+        $currStage.hide();
+        resolution = res;
+
+        $currStage = $( '.stage.' + resolution );
+        $currStage.show();
+        $selected = null;
+      }
+
+      $currStage = $( '.stage.' + resolution );
+      $currStage.show();
+
+      $( '.stage' ).mousedown( function() {
+        $selected = null;
+        changeSelection();
+      })
+
+    </script>
+  </body>
+</html>
