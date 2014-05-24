@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="en" ng-app="prototyping">
+	<head>
+		<meta charset="UTF-8">
+		<title>Editor</title>
+	</head>
+	<body ng-controller="Sample">
+		{{ moment().format( 'DD/MM/YYYY HH:mm:ss' ) }}
+
+		<!-- Libs -->
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/moment/moment.js"></script>
+
+		<!-- App -->
+		<script src="js/app.js"></script>
+		<script>
+			function Sample( $scope ) {
+				$scope.moment = moment;
+			}
+		</script>
+	</body>
+</html>
