@@ -1,0 +1,19 @@
+{
+  "name": "prototyping",
+  "version": "0.0.0",
+  "homepage": "https://github.com/danieltartarottisobrosa/prototyping",
+  "authors": [
+    "Daniel T. Sobrosa <danieltsobrosa@gmail.com>"
+  ],
+  "license": "GPL-2.0",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "~2.6.0",
+    "angular": "~1.2.16"
+  }
+}
